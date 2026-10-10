@@ -11,7 +11,8 @@ info ' Adding Trace Labs apt repository (apt.tracelabs.org)'
 #### '----------------------------------------------------------------------
 # Key fingerprint: 34CE 4BC7 4FC3 BFFE 7AD7 7C2A E7A5 76CA 1ABD 03CD
 install -d -m 0755 "${INSTALL_DIR}/etc/apt/keyrings"
-install -m 0644 "${KEYS_DIR}/tlosint-archive-keyring.gpg" \
+# Not ${KEYS_DIR}: qubes-builderv2 points that at its own chroot_deb/keys
+install -m 0644 "${TEMPLATE_CONTENT_DIR}/../keys/tlosint-archive-keyring.gpg" \
     "${INSTALL_DIR}/etc/apt/keyrings/tlosint-archive-keyring.gpg"
 
 cat > "${INSTALL_DIR}/etc/apt/sources.list.d/tlosint.sources" <<'EOF'

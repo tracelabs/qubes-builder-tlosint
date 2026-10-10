@@ -1,9 +1,21 @@
 # Example qubes-builderv2 configuration for the Trace Labs OSINT template.
-# Copy into your qubes-builderv2 checkout as builder.yml, then run:
+# Copy into your qubes-builderv2 checkout as builder.yml, and export the
+# signing key there as keys-tlosint/34CE4BC74FC3BFFE7AD77C2AE7A576CA1ABD03CD.asc:
+#   gpg --no-default-keyring --keyring ./keys/tlosint-archive-keyring.gpg \
+#       --export --armor 34CE4BC74FC3BFFE7AD77C2AE7A576CA1ABD03CD
+# Then run:
 #   ./qb -c builder-debian package fetch
 #   ./qb -t debian-13-tlosint template all
 include:
   - example-configs/qubes-os-r4.3.yml
+
+# Get Qubes packages from the official repositories instead of building them
+use-qubes-repo:
+  version: '4.3'
+  testing: false
+
+key-dirs:
+  - keys-tlosint
 
 executor:
   type: docker
@@ -13,8 +25,12 @@ executor:
 components:
   - builder-debian:
       url: https://github.com/tracelabs/qubes-builder-tlosint
+      # HEAD of main must carry a tag signed by the key below
       branch: main
       packages: false
+      maintainers:
+        # Trace Labs VM Team (apt/RPM root key)
+        - 34CE4BC74FC3BFFE7AD77C2AE7A576CA1ABD03CD
 
 templates:
   # Package list and appmenus come from the 'tlosint' flavor;
