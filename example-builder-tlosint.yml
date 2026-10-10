@@ -1,0 +1,27 @@
+# Example qubes-builderv2 configuration for the Trace Labs OSINT template.
+# Copy into your qubes-builderv2 checkout as builder.yml, then run:
+#   ./qb -c builder-debian package fetch
+#   ./qb -t debian-13-tlosint template all
+include:
+  - example-configs/qubes-os-r4.3.yml
+
+executor:
+  type: docker
+  options:
+    image: "qubes-builder-fedora:latest"
+
+components:
+  - builder-debian:
+      url: https://github.com/tracelabs/qubes-builder-tlosint
+      branch: main
+      packages: false
+
+templates:
+  # Package list and appmenus come from the 'tlosint' flavor;
+  # the desktop and firmware come from the upstream xfce/firmware options.
+  - debian-13-tlosint:
+      dist: trixie
+      flavor: tlosint
+      options:
+        - xfce
+        - firmware
